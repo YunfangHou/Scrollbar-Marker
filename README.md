@@ -1,33 +1,36 @@
 # Scrollbar Marker
 
-一个轻量的 Chrome 扩展，在网页原生滚动条左侧显示位置标记，并可一键滚动回标记位置。
+English | [简体中文](README_zh.md)
 
-## 安装
+A lightweight Chrome extension that places position markers beside the native scrollbar, letting you return to important spots on a webpage with one click.
 
-1. 打开 `chrome://extensions/`。
-2. 开启右上角的“开发者模式”。
-3. 点击“加载已解压的扩展程序”。
-4. 选择本项目文件夹。
+## Installation
 
-## 使用
+1. Download or clone this repository.
+2. Open `chrome://extensions/` in Chrome.
+3. Enable **Developer mode** in the top-right corner.
+4. Click **Load unpacked** and select this project folder.
 
-- 点击页面右下方半透明的 `+` 添加当前位置；也可以拖动它并将位置保存在不同网页间。
-- 或点击 Chrome 工具栏中的扩展图标。
-- 或在设置页中自定义快捷键；新安装默认不设置快捷键。
-- 点击标记可平滑滚动到对应位置。
-- 右键点击标记可打开编辑气泡，选择八种颜色之一、填写备注、删除单个标记或删除当前网页的全部标记。
-- 备注在输入时自动保存，按 Enter、Escape 或“关闭”只需关闭气泡。
-- 备注输入框可被 Vimium 等键盘导航扩展识别，输入字符时不会触发页面快捷键。
-- 备注会显示在标记上，常态宽度最多为页面宽度的 5%，悬停时最多展开至 10%。
-- 标记按完整网址（忽略 `#` 锚点）保存在 Chrome 本地存储中。
+## Usage
 
-## 设置
+- Click the translucent `+` button near the bottom-right corner of the page to mark your current position. You can also drag the button, and its position is preserved across webpages.
+- Alternatively, click the extension icon in the Chrome toolbar or configure a keyboard shortcut on the settings page. No shortcut is assigned by default.
+- Click a marker to scroll smoothly back to that position.
+- Right-click a marker to open the editor. From there, you can choose from eight colors, add a note, delete the marker, or delete every marker on the current page.
+- Notes are saved automatically as you type. Pressing Enter, Escape, or **Close** simply closes the editor.
+- The note field works with keyboard-navigation extensions such as Vimium, and typing in it will not trigger webpage shortcuts.
+- Notes appear directly on markers. A marker uses at most 5% of the page width normally and can expand to 10% on hover.
+- Markers are stored in Chrome's local extension storage and grouped by full URL, excluding the `#` fragment.
 
-右键点击 Chrome 工具栏中的扩展图标，选择“自定义设置”，即可：
+## Settings
 
-- 控制页面右下角的 `+` 是否显示。
-- 选择之后新建标记的默认颜色。
-- 查看当前快捷键并打开 Chrome 的扩展快捷键设置页，自定义快捷键。
-- 查看所有已标记的网页、favicon 和标记数量，并逐项删除。
+Right-click the extension icon in the Chrome toolbar and select **Custom settings** to:
 
-Chrome 不允许网页脚本直接向浏览器原生滚动条内部添加交互元素，因此标记轨道紧贴在滚动条左侧。
+- Show or hide the `+` button in the bottom-right corner.
+- Choose the default color for newly created markers.
+- View the current keyboard shortcut and open Chrome's extension shortcut page to change it.
+- Browse all marked pages with their favicons and marker counts, and delete their markers individually.
+
+## Browser limitation
+
+Chrome does not allow webpage scripts to place interactive elements inside the browser's native scrollbar. Scrollbar Marker therefore renders its marker rail immediately to the left of the scrollbar.
