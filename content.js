@@ -4,6 +4,7 @@
   const STORAGE_PREFIX = "scrollbar-markers:";
   const MERGE_DISTANCE = 0.004;
   const DEFAULT_COLOR = "#f97316";
+  const OVERLAY_SCROLLBAR_FALLBACK = 16;
   const ADD_BUTTON_SIZE = 18;
   const ADD_BUTTON_EDGE_MARGIN = 6;
   const DRAG_THRESHOLD = 4;
@@ -45,9 +46,10 @@
   const shadow = host.attachShadow({ mode: "closed" });
   shadow.innerHTML = `
     <style>
-      :host { color-scheme: light dark; }
+      :host { color-scheme: light dark; --scrollbar-gutter: ${OVERLAY_SCROLLBAR_FALLBACK}px; }
       * { box-sizing: border-box; }
-      #rail { position:absolute; inset:0 0 0 auto; width:8px; pointer-events:none; }
+      /* Measured scrollbars use their real width; overlay scrollbars use a safe fallback. */
+      #rail { position:absolute; inset:0 var(--scrollbar-gutter) 0 auto; width:8px; pointer-events:none; }
       .marker {
         appearance:none; position:absolute; right:0; display:block; min-width:32px; width:32px;
         max-width:5vw; height:7px; padding:0; overflow:hidden; border:0; border-radius:4px 0 0 4px;
@@ -70,7 +72,7 @@
       #add.dragging { cursor:grabbing; opacity:1; transform:none; }
       #add[hidden] { display:none; }
       #editor {
-        position:absolute; right:22px; width:280px; padding:12px; border:1px solid #cbd5e1; border-radius:10px;
+        position:absolute; right:calc(var(--scrollbar-gutter) + 6px); width:280px; padding:12px; border:1px solid #cbd5e1; border-radius:10px;
         background:#fff; color:#0f172a; box-shadow:0 8px 28px rgba(0,0,0,.28);
         font:12px/1.4 ui-sans-serif,system-ui,sans-serif; pointer-events:auto;
       }
@@ -153,6 +155,15 @@
   const palette = shadow.getElementById("palette");
   const toast = shadow.getElementById("toast");
   const deleteAllButton = shadow.getElementById("delete-all-marker");
+
+  function updateScrollbarGutter() {
+    const documentWidth = document.documentElement.clientWidth;
+    const measuredWidth = documentWidth > 0 ? window.innerWidth - documentWidth : 0;
+    const gutter = Math.max(OVERLAY_SCROLLBAR_FALLBACK, Math.round(measuredWidth));
+    host.style.setProperty("--scrollbar-gutter", `${gutter}px`);
+  }
+
+  updateScrollbarGutter();
 
   function hasExtensionContext() {
     try {
@@ -309,6 +320,7 @@
   }
 
   function render() {
+    updateScrollbarGutter();
     closeEditor();
     rail.replaceChildren();
     markers.forEach((marker) => {
@@ -488,7 +500,10 @@
     }
     addMarker();
   });
-  window.addEventListener("resize", applySavedAddButtonPosition);
+  window.addEventListener("resize", () => {
+    updateScrollbarGutter();
+    applySavedAddButtonPosition();
+  });
   try {
     chrome.runtime.onMessage.addListener((message) => {
       if (message?.type === "SCROLLBAR_MARKER_ADD") addMarker();
