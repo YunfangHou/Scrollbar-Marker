@@ -16,7 +16,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "__MSG_addMarker__",
+    "default_title": "__MSG_addTag__",
     "default_icon": {
       "16": "icons/icon-16.png",
       "32": "icons/icon-32.png"
@@ -27,8 +27,8 @@
     "open_in_tab": true
   },
   "commands": {
-    "add-scroll-marker": {
-      "description": "__MSG_addMarker__"
+    "add-scroll-tag": {
+      "description": "__MSG_addTag__"
     }
   },
   "content_scripts": [

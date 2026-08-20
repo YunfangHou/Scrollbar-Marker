@@ -1,27 +1,27 @@
 {
-  "extensionName": { "message": "Scrollbar Marker" },
-  "extensionDescription": { "message": "Mark positions beside a webpage scrollbar and jump back to them with one click." },
-  "addMarker": { "message": "Mark current scroll position" },
+  "extensionName": { "message": "Scrollbar Tag" },
+  "extensionDescription": { "message": "Tag positions beside a webpage scrollbar and jump back to them with one click." },
+  "addTag": { "message": "Tag current scroll position" },
   "optionsContextMenu": { "message": "Custom settings" },
-  "optionsTitle": { "message": "Scrollbar Marker Settings" },
+  "optionsTitle": { "message": "Scrollbar Tag Settings" },
   "interfaceHeading": { "message": "Interface" },
   "showAddButton": { "message": "Show the add button in the bottom-right corner" },
-  "shortcutHeading": { "message": "Add marker shortcut" },
+  "shortcutHeading": { "message": "Add tag shortcut" },
   "loading": { "message": "Loading…" },
   "changeShortcut": { "message": "Change shortcut" },
-  "shortcutHelp": { "message": "Chrome manages extension shortcuts. Click the button, then enter your preferred key combination beside “Mark current scroll position.”" },
+  "shortcutHelp": { "message": "Chrome manages extension shortcuts. Click the button, then enter your preferred key combination beside “Tag current scroll position.”" },
   "shortcutNotSet": { "message": "Not set" },
-  "defaultColorHeading": { "message": "Default marker color" },
-  "defaultColorHelp": { "message": "This only affects new markers. Right-click an existing marker to change its color." },
-  "markedPagesHeading": { "message": "Marked pages" },
-  "noMarkedPages": { "message": "No marked pages yet." },
-  "markedPagesCount": {
+  "defaultColorHeading": { "message": "Default tag color" },
+  "defaultColorHelp": { "message": "This only affects new tags. Right-click an existing tag to change its color." },
+  "taggedPagesHeading": { "message": "Tagged pages" },
+  "noTaggedPages": { "message": "No tagged pages yet." },
+  "taggedPagesCount": {
     "message": "$COUNT$ pages",
     "placeholders": { "count": { "content": "$1" } }
   },
-  "deletePageMarkers": { "message": "Delete" },
-  "confirmDeletePageMarkers": {
-    "message": "Delete all markers for this page?\n\n$URL$",
+  "deletePageTags": { "message": "Delete" },
+  "confirmDeletePageTags": {
+    "message": "Delete all tags for this page?\n\n$URL$",
     "placeholders": { "url": { "content": "$1" } }
   },
   "defaultColorSet": {
@@ -36,21 +36,21 @@
   "colorPurple": { "message": "Purple" },
   "colorBlack": { "message": "Black" },
   "colorWhite": { "message": "White" },
-  "markerRailLabel": { "message": "Page scroll position markers" },
-  "editMarker": { "message": "Edit marker" },
-  "markerColorLabel": { "message": "Marker color" },
-  "deleteMarker": { "message": "Delete" },
-  "deleteAllMarkers": { "message": "Delete all" },
-  "confirmDeleteAllMarkers": { "message": "Confirm delete all" },
-  "allMarkersDeleted": { "message": "All markers on this page were deleted" },
+  "tagRailLabel": { "message": "Page scroll position tags" },
+  "editTag": { "message": "Edit tag" },
+  "tagColorLabel": { "message": "Tag color" },
+  "deleteTag": { "message": "Delete" },
+  "deleteAllTags": { "message": "Delete all" },
+  "confirmDeleteAllTags": { "message": "Confirm delete all" },
+  "allTagsDeleted": { "message": "All tags on this page were deleted" },
   "close": { "message": "Close" },
   "notePlaceholder": { "message": "Enter a note (up to 200 characters)" },
-  "markerNoteLabel": { "message": "Marker note" },
-  "markerJumpTitle": {
+  "tagNoteLabel": { "message": "Tag note" },
+  "tagJumpTitle": {
     "message": "Jump to $PERCENT$% of the page (right-click to edit)",
     "placeholders": { "percent": { "content": "$1" } }
   },
-  "markerJumpTitleWithNote": {
+  "tagJumpTitleWithNote": {
     "message": "$NOTE$ · Jump to $PERCENT$% of the page (right-click to edit)",
     "placeholders": {
       "note": { "content": "$1" },
@@ -58,10 +58,10 @@
     }
   },
   "pageDoesNotScroll": { "message": "This page does not need to scroll" },
-  "markerAlreadyHere": { "message": "There is already a marker here" },
-  "markerAdded": {
-    "message": "Marked $PERCENT$% of the page",
+  "tagAlreadyHere": { "message": "There is already a tag here" },
+  "tagAdded": {
+    "message": "Tagged $PERCENT$% of the page",
     "placeholders": { "percent": { "content": "$1" } }
   },
-  "markerDeleted": { "message": "Marker deleted" }
+  "tagDeleted": { "message": "Tag deleted" }
 }

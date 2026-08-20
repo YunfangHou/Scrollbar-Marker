@@ -45,12 +45,12 @@ button { font: inherit; cursor: pointer; }
 .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .section-heading h2 { margin-bottom: 0; }
 .count { color: #64748b; font-size: 12px; }
-.marked-pages { margin: 14px 0 0; padding: 0; list-style: none; }
-.marked-page { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #e2e8f0; }
+.tagged-pages { margin: 14px 0 0; padding: 0; list-style: none; }
+.tagged-page { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #e2e8f0; }
 .favicon { width: 18px; height: 18px; object-fit: contain; }
 .page-link { min-width: 0; overflow: hidden; color: #2563eb; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
 .delete-page { padding: 5px 9px; border: 1px solid #fecaca; border-radius: 6px; background: #fff; color: #dc2626; }
-#no-marked-pages[hidden] { display: none; }
+#no-tagged-pages[hidden] { display: none; }
 
 @media (prefers-color-scheme: dark) {
   :root { background: #0f172a; color: #e2e8f0; }
@@ -58,7 +58,7 @@ button { font: inherit; cursor: pointer; }
   p { color: #94a3b8; }
   kbd { background: #0f172a; border-color: #475569; }
   .count { color: #94a3b8; }
-  .marked-page { border-color: #334155; }
+  .tagged-page { border-color: #334155; }
   .page-link { color: #60a5fa; }
   .delete-page { border-color: #7f1d1d; background: #1e293b; color: #fca5a5; }
 }

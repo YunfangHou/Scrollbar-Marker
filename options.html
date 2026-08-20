@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title data-i18n="optionsTitle">Scrollbar Marker Settings</title>
+    <title data-i18n="optionsTitle">Scrollbar Tag Settings</title>
     <link rel="stylesheet" href="options.css">
   </head>
   <body>
     <main>
-      <h1 data-i18n="optionsTitle">Scrollbar Marker Settings</h1>
+      <h1 data-i18n="optionsTitle">Scrollbar Tag Settings</h1>
 
       <section>
         <h2 data-i18n="interfaceHeading">Interface</h2>
@@ -19,27 +19,27 @@
       </section>
 
       <section>
-        <h2 data-i18n="shortcutHeading">Add marker shortcut</h2>
+        <h2 data-i18n="shortcutHeading">Add tag shortcut</h2>
         <div class="shortcut-row">
           <kbd id="shortcut" data-i18n="loading">Loading…</kbd>
           <button id="change-shortcut" type="button" data-i18n="changeShortcut">Change shortcut</button>
         </div>
-        <p data-i18n="shortcutHelp">Chrome manages extension shortcuts. Click the button, then enter your preferred key combination beside “Mark current scroll position.”</p>
+        <p data-i18n="shortcutHelp">Chrome manages extension shortcuts. Click the button, then enter your preferred key combination beside “Tag current scroll position.”</p>
       </section>
 
       <section>
-        <h2 data-i18n="defaultColorHeading">Default marker color</h2>
-        <div id="colors" class="colors" role="radiogroup" aria-label="Default marker color" data-i18n-aria-label="defaultColorHeading"></div>
-        <p data-i18n="defaultColorHelp">This only affects new markers. Right-click an existing marker to change its color.</p>
+        <h2 data-i18n="defaultColorHeading">Default tag color</h2>
+        <div id="colors" class="colors" role="radiogroup" aria-label="Default tag color" data-i18n-aria-label="defaultColorHeading"></div>
+        <p data-i18n="defaultColorHelp">This only affects new tags. Right-click an existing tag to change its color.</p>
       </section>
 
       <section>
         <div class="section-heading">
-          <h2 data-i18n="markedPagesHeading">Marked pages</h2>
+          <h2 data-i18n="taggedPagesHeading">Tagged pages</h2>
           <span id="page-count" class="count"></span>
         </div>
-        <p id="no-marked-pages" data-i18n="noMarkedPages">No marked pages yet.</p>
-        <ul id="marked-pages" class="marked-pages" aria-live="polite"></ul>
+        <p id="no-tagged-pages" data-i18n="noTaggedPages">No tagged pages yet.</p>
+        <ul id="tagged-pages" class="tagged-pages" aria-live="polite"></ul>
       </section>
 
       <div id="status" role="status" aria-live="polite"></div>

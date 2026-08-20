@@ -9,12 +9,12 @@ const COLORS = [
   ["colorWhite", "#ffffff"]
 ];
 const DEFAULT_COLOR = "#f97316";
-const STORAGE_PREFIX = "scrollbar-markers:";
+const STORAGE_PREFIX = "scrollbar-tags:";
 const colors = document.getElementById("colors");
 const status = document.getElementById("status");
 const showAddButton = document.getElementById("show-add-button");
-const markedPages = document.getElementById("marked-pages");
-const noMarkedPages = document.getElementById("no-marked-pages");
+const taggedPages = document.getElementById("tagged-pages");
+const noTaggedPages = document.getElementById("no-tagged-pages");
 const pageCount = document.getElementById("page-count");
 const t = (key, substitutions) => chrome.i18n.getMessage(key, substitutions);
 
@@ -39,7 +39,7 @@ function renderColors(selected) {
     button.setAttribute("aria-label", name);
     button.setAttribute("aria-checked", String(value === selected));
     button.addEventListener("click", () => {
-      chrome.storage.sync.set({ defaultMarkerColor: value }, () => {
+      chrome.storage.sync.set({ defaultTagColor: value }, () => {
         renderColors(value);
         status.textContent = t("defaultColorSet", name);
         setTimeout(() => { status.textContent = ""; }, 1600);
@@ -56,20 +56,20 @@ function faviconUrl(url) {
   return resource.href;
 }
 
-function loadMarkedPages() {
+function loadTaggedPages() {
   chrome.storage.local.get(null, (items) => {
     const pages = Object.entries(items)
       .filter(([key, value]) => key.startsWith(STORAGE_PREFIX) && Array.isArray(value) && value.length)
-      .map(([key, markers]) => ({ key, url: key.slice(STORAGE_PREFIX.length), count: markers.length }))
+      .map(([key, tags]) => ({ key, url: key.slice(STORAGE_PREFIX.length), count: tags.length }))
       .sort((a, b) => a.url.localeCompare(b.url));
 
-    markedPages.replaceChildren();
-    noMarkedPages.hidden = pages.length > 0;
-    pageCount.textContent = pages.length ? t("markedPagesCount", String(pages.length)) : "";
+    taggedPages.replaceChildren();
+    noTaggedPages.hidden = pages.length > 0;
+    pageCount.textContent = pages.length ? t("taggedPagesCount", String(pages.length)) : "";
 
     pages.forEach((page) => {
       const item = document.createElement("li");
-      item.className = "marked-page";
+      item.className = "tagged-page";
 
       const icon = document.createElement("img");
       icon.className = "favicon";
@@ -87,14 +87,14 @@ function loadMarkedPages() {
       const remove = document.createElement("button");
       remove.type = "button";
       remove.className = "delete-page";
-      remove.textContent = t("deletePageMarkers");
+      remove.textContent = t("deletePageTags");
       remove.addEventListener("click", () => {
-        if (!confirm(t("confirmDeletePageMarkers", page.url))) return;
-        chrome.storage.local.remove(page.key, loadMarkedPages);
+        if (!confirm(t("confirmDeletePageTags", page.url))) return;
+        chrome.storage.local.remove(page.key, loadTaggedPages);
       });
 
       item.append(icon, link, remove);
-      markedPages.appendChild(item);
+      taggedPages.appendChild(item);
     });
   });
 }
@@ -106,13 +106,13 @@ showAddButton.addEventListener("change", () => {
   chrome.storage.sync.set({ showAddButton: showAddButton.checked });
 });
 
-chrome.storage.sync.get({ defaultMarkerColor: DEFAULT_COLOR }, ({ defaultMarkerColor }) => {
-  renderColors(defaultMarkerColor);
+chrome.storage.sync.get({ defaultTagColor: DEFAULT_COLOR }, ({ defaultTagColor }) => {
+  renderColors(defaultTagColor);
 });
 
 function loadShortcut() {
   chrome.commands.getAll((commands) => {
-    const command = commands.find((item) => item.name === "add-scroll-marker");
+    const command = commands.find((item) => item.name === "add-scroll-tag");
     document.getElementById("shortcut").textContent = command?.shortcut || t("shortcutNotSet");
   });
 }
@@ -125,7 +125,7 @@ document.getElementById("change-shortcut").addEventListener("click", () => {
 
 chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName === "local" && Object.keys(changes).some((key) => key.startsWith(STORAGE_PREFIX))) {
-    loadMarkedPages();
+    loadTaggedPages();
   }
 });
-loadMarkedPages();
+loadTaggedPages();
