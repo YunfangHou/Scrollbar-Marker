@@ -1,0 +1,67 @@
+{
+  "extensionName": { "message": "Scrollbar Marker" },
+  "extensionDescription": { "message": "在网页滚动条旁标记位置，并一键跳转。" },
+  "addMarker": { "message": "标记当前滚动位置" },
+  "optionsContextMenu": { "message": "自定义设置" },
+  "optionsTitle": { "message": "Scrollbar Marker 设置" },
+  "interfaceHeading": { "message": "界面" },
+  "showAddButton": { "message": "显示界面右下角的添加按钮" },
+  "shortcutHeading": { "message": "添加标记快捷键" },
+  "loading": { "message": "读取中…" },
+  "changeShortcut": { "message": "修改快捷键" },
+  "shortcutHelp": { "message": "快捷键由 Chrome 统一管理。点击按钮后，在“标记当前滚动位置”右侧输入你希望使用的组合键。" },
+  "shortcutNotSet": { "message": "尚未设置" },
+  "defaultColorHeading": { "message": "默认标记颜色" },
+  "defaultColorHelp": { "message": "只影响之后新建的标记，已有标记的颜色可通过右键单独修改。" },
+  "markedPagesHeading": { "message": "已标记的网页" },
+  "noMarkedPages": { "message": "还没有标记过网页。" },
+  "markedPagesCount": {
+    "message": "共 $COUNT$ 个网页",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "deletePageMarkers": { "message": "删除" },
+  "confirmDeletePageMarkers": {
+    "message": "确定删除此网页的全部标记吗？\n\n$URL$",
+    "placeholders": { "url": { "content": "$1" } }
+  },
+  "defaultColorSet": {
+    "message": "默认颜色已设为$COLOR$",
+    "placeholders": { "color": { "content": "$1" } }
+  },
+  "colorRed": { "message": "红色" },
+  "colorOrange": { "message": "橙色" },
+  "colorYellow": { "message": "黄色" },
+  "colorGreen": { "message": "绿色" },
+  "colorBlue": { "message": "蓝色" },
+  "colorPurple": { "message": "紫色" },
+  "colorBlack": { "message": "黑色" },
+  "colorWhite": { "message": "白色" },
+  "markerRailLabel": { "message": "页面滚动位置标记" },
+  "editMarker": { "message": "编辑标记" },
+  "markerColorLabel": { "message": "标记颜色" },
+  "deleteMarker": { "message": "删除" },
+  "deleteAllMarkers": { "message": "删除全部" },
+  "confirmDeleteAllMarkers": { "message": "确认全部删除" },
+  "allMarkersDeleted": { "message": "已删除当前网页的全部标记" },
+  "close": { "message": "关闭" },
+  "notePlaceholder": { "message": "输入备注（最多 200 字）" },
+  "markerNoteLabel": { "message": "标记备注" },
+  "markerJumpTitle": {
+    "message": "跳转到页面 $PERCENT$%（右键编辑）",
+    "placeholders": { "percent": { "content": "$1" } }
+  },
+  "markerJumpTitleWithNote": {
+    "message": "$NOTE$ · 跳转到页面 $PERCENT$%（右键编辑）",
+    "placeholders": {
+      "note": { "content": "$1" },
+      "percent": { "content": "$2" }
+    }
+  },
+  "pageDoesNotScroll": { "message": "当前页面无需滚动" },
+  "markerAlreadyHere": { "message": "这里已有标记" },
+  "markerAdded": {
+    "message": "已标记页面 $PERCENT$%",
+    "placeholders": { "percent": { "content": "$1" } }
+  },
+  "markerDeleted": { "message": "已删除标记" }
+}

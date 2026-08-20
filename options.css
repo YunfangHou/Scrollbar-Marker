@@ -1,0 +1,64 @@
+:root {
+  color-scheme: light dark;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+body { margin: 0; }
+
+main {
+  width: min(620px, calc(100% - 40px));
+  margin: 48px auto;
+}
+
+h1 { margin: 0 0 28px; font-size: 26px; }
+h2 { margin: 0 0 14px; font-size: 17px; }
+
+section {
+  margin-bottom: 18px;
+  padding: 22px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, .05);
+}
+
+p { margin: 12px 0 0; color: #64748b; font-size: 13px; line-height: 1.6; }
+.toggle-row { display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; }
+.toggle-row input { width: 17px; height: 17px; margin: 0; accent-color: #2563eb; }
+.shortcut-row { display: flex; align-items: center; gap: 12px; }
+kbd { min-width: 130px; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 7px; background: #f8fafc; }
+button { font: inherit; cursor: pointer; }
+#change-shortcut { padding: 8px 13px; border: 0; border-radius: 7px; background: #2563eb; color: #fff; }
+.colors { display: flex; flex-wrap: wrap; gap: 12px; }
+.color {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+.color[aria-checked="true"] { outline: 3px solid #2563eb; outline-offset: 2px; }
+#status { min-height: 20px; color: #15803d; font-size: 13px; }
+.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.section-heading h2 { margin-bottom: 0; }
+.count { color: #64748b; font-size: 12px; }
+.marked-pages { margin: 14px 0 0; padding: 0; list-style: none; }
+.marked-page { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #e2e8f0; }
+.favicon { width: 18px; height: 18px; object-fit: contain; }
+.page-link { min-width: 0; overflow: hidden; color: #2563eb; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.delete-page { padding: 5px 9px; border: 1px solid #fecaca; border-radius: 6px; background: #fff; color: #dc2626; }
+#no-marked-pages[hidden] { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  :root { background: #0f172a; color: #e2e8f0; }
+  section { background: #1e293b; border-color: #475569; }
+  p { color: #94a3b8; }
+  kbd { background: #0f172a; border-color: #475569; }
+  .count { color: #94a3b8; }
+  .marked-page { border-color: #334155; }
+  .page-link { color: #60a5fa; }
+  .delete-page { border-color: #7f1d1d; background: #1e293b; color: #fca5a5; }
+}
