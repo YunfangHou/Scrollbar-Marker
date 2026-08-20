@@ -4,6 +4,9 @@
   const STORAGE_PREFIX = "scrollbar-markers:";
   const MERGE_DISTANCE = 0.004;
   const DEFAULT_COLOR = "#f97316";
+  const ADD_BUTTON_SIZE = 18;
+  const ADD_BUTTON_EDGE_MARGIN = 6;
+  const DRAG_THRESHOLD = 4;
   const t = (key, substitutions) => {
     try {
       return chrome.i18n.getMessage(key, substitutions);
@@ -22,6 +25,9 @@
   let pageKey = getPageKey();
   let defaultColor = DEFAULT_COLOR;
   let showAddButton = true;
+  let addButtonPosition = null;
+  let addButtonDrag = null;
+  let suppressAddClick = false;
   let toastTimer;
   let deleteAllConfirmTimer;
   let urlPollTimer;
@@ -54,12 +60,14 @@
       .marker.has-note { width:max-content; height:18px; padding:0 6px; border-radius:9px 0 0 9px; }
       .marker:hover,.marker:focus-visible { min-width:40px; max-width:10vw; filter:brightness(1.08); outline:2px solid #fff; outline-offset:1px; }
       #add {
-        appearance:none; position:absolute; right:3px; bottom:18px; width:18px; height:18px; padding:0 0 1px;
+        appearance:none; position:absolute; right:28px; bottom:18px; width:18px; height:18px; padding:0 0 1px;
         border:1px solid rgba(15,23,42,.35); border-radius:50%; background:#2563eb; color:white;
         font:700 16px/15px ui-sans-serif,system-ui,sans-serif; box-shadow:0 2px 7px rgba(0,0,0,.3);
-        cursor:pointer; pointer-events:auto; opacity:.35; transition:opacity 120ms ease,transform 120ms ease;
+        cursor:grab; pointer-events:auto; opacity:.35; touch-action:none; user-select:none;
+        transition:opacity 120ms ease,transform 120ms ease;
       }
       #add:hover,#add:focus-visible { opacity:1; transform:scale(1.12); outline:none; }
+      #add.dragging { cursor:grabbing; opacity:1; transform:none; }
       #add[hidden] { display:none; }
       #editor {
         position:absolute; right:22px; width:280px; padding:12px; border:1px solid #cbd5e1; border-radius:10px;
@@ -175,6 +183,54 @@
     const root = getScrollRoot();
     const max = Math.max(0, root.scrollHeight - root.clientHeight);
     return max ? Math.min(1, Math.max(0, root.scrollTop / max)) : 0;
+  }
+
+  function isValidAddButtonPosition(position) {
+    return position && Number.isFinite(position.x) && Number.isFinite(position.y)
+      && position.x >= 0 && position.x <= 1 && position.y >= 0 && position.y <= 1;
+  }
+
+  function getAddButtonBounds() {
+    return {
+      maxLeft: Math.max(ADD_BUTTON_EDGE_MARGIN, window.innerWidth - ADD_BUTTON_SIZE - ADD_BUTTON_EDGE_MARGIN),
+      maxTop: Math.max(ADD_BUTTON_EDGE_MARGIN, window.innerHeight - ADD_BUTTON_SIZE - ADD_BUTTON_EDGE_MARGIN)
+    };
+  }
+
+  function placeAddButton(left, top) {
+    const { maxLeft, maxTop } = getAddButtonBounds();
+    addButton.style.right = "auto";
+    addButton.style.bottom = "auto";
+    addButton.style.left = `${Math.min(maxLeft, Math.max(ADD_BUTTON_EDGE_MARGIN, left))}px`;
+    addButton.style.top = `${Math.min(maxTop, Math.max(ADD_BUTTON_EDGE_MARGIN, top))}px`;
+  }
+
+  function applySavedAddButtonPosition() {
+    if (!isValidAddButtonPosition(addButtonPosition)) {
+      addButton.style.left = "auto";
+      addButton.style.top = "auto";
+      addButton.style.right = "28px";
+      addButton.style.bottom = "18px";
+      return;
+    }
+    const { maxLeft, maxTop } = getAddButtonBounds();
+    placeAddButton(
+      ADD_BUTTON_EDGE_MARGIN + addButtonPosition.x * (maxLeft - ADD_BUTTON_EDGE_MARGIN),
+      ADD_BUTTON_EDGE_MARGIN + addButtonPosition.y * (maxTop - ADD_BUTTON_EDGE_MARGIN)
+    );
+  }
+
+  function saveAddButtonPosition() {
+    const { maxLeft, maxTop } = getAddButtonBounds();
+    addButtonPosition = {
+      x: maxLeft === ADD_BUTTON_EDGE_MARGIN ? 0 : (addButton.offsetLeft - ADD_BUTTON_EDGE_MARGIN) / (maxLeft - ADD_BUTTON_EDGE_MARGIN),
+      y: maxTop === ADD_BUTTON_EDGE_MARGIN ? 0 : (addButton.offsetTop - ADD_BUTTON_EDGE_MARGIN) / (maxTop - ADD_BUTTON_EDGE_MARGIN)
+    };
+    try {
+      chrome.storage.sync.set({ addButtonPosition });
+    } catch {
+      stopInvalidContext();
+    }
   }
 
   function contrastColor(color) {
@@ -389,16 +445,61 @@
   for (const eventName of ["keydown", "keypress", "keyup"]) {
     noteInput.addEventListener(eventName, (event) => event.stopPropagation());
   }
-  addButton.addEventListener("click", addMarker);
+  addButton.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    addButtonDrag = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      startLeft: addButton.offsetLeft,
+      startTop: addButton.offsetTop,
+      moved: false
+    };
+    addButton.setPointerCapture(event.pointerId);
+  });
+  addButton.addEventListener("pointermove", (event) => {
+    if (!addButtonDrag || event.pointerId !== addButtonDrag.pointerId) return;
+    const deltaX = event.clientX - addButtonDrag.startX;
+    const deltaY = event.clientY - addButtonDrag.startY;
+    if (!addButtonDrag.moved && Math.hypot(deltaX, deltaY) < DRAG_THRESHOLD) return;
+    addButtonDrag.moved = true;
+    addButton.classList.add("dragging");
+    placeAddButton(addButtonDrag.startLeft + deltaX, addButtonDrag.startTop + deltaY);
+    event.preventDefault();
+  });
+  function finishAddButtonDrag(event) {
+    if (!addButtonDrag || event.pointerId !== addButtonDrag.pointerId) return;
+    const moved = addButtonDrag.moved;
+    addButtonDrag = null;
+    addButton.classList.remove("dragging");
+    if (!moved) return;
+    suppressAddClick = true;
+    setTimeout(() => { suppressAddClick = false; }, 0);
+    saveAddButtonPosition();
+    event.preventDefault();
+  }
+  addButton.addEventListener("pointerup", finishAddButtonDrag);
+  addButton.addEventListener("pointercancel", finishAddButtonDrag);
+  addButton.addEventListener("click", (event) => {
+    if (suppressAddClick) {
+      suppressAddClick = false;
+      event.preventDefault();
+      return;
+    }
+    addMarker();
+  });
+  window.addEventListener("resize", applySavedAddButtonPosition);
   try {
     chrome.runtime.onMessage.addListener((message) => {
       if (message?.type === "SCROLLBAR_MARKER_ADD") addMarker();
     });
 
-    chrome.storage.sync.get({ defaultMarkerColor: DEFAULT_COLOR, showAddButton: true }, (settings) => {
+    chrome.storage.sync.get({ defaultMarkerColor: DEFAULT_COLOR, showAddButton: true, addButtonPosition: null }, (settings) => {
       if (VALID_COLORS.has(settings.defaultMarkerColor)) defaultColor = settings.defaultMarkerColor;
       showAddButton = settings.showAddButton !== false;
+      addButtonPosition = isValidAddButtonPosition(settings.addButtonPosition) ? settings.addButtonPosition : null;
       addButton.hidden = !showAddButton;
+      applySavedAddButtonPosition();
       load();
     });
     chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -409,6 +510,11 @@
         if (changes.showAddButton) {
           showAddButton = changes.showAddButton.newValue !== false;
           addButton.hidden = !showAddButton;
+        }
+        if (changes.addButtonPosition) {
+          const nextPosition = changes.addButtonPosition.newValue;
+          addButtonPosition = isValidAddButtonPosition(nextPosition) ? nextPosition : null;
+          if (!addButtonDrag) applySavedAddButtonPosition();
         }
       }
       if (areaName === "local" && changes[pageKey]?.newValue === undefined) {
